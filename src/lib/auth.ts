@@ -13,7 +13,9 @@ function getJwtSecret(): string {
     return secret;
 }
 
-const JWT_SECRET = getJwtSecret();
+// ⚠️ Do NOT call getJwtSecret() at module level — env vars are not
+// available during Next.js static page collection (build time).
+// Always resolve lazily inside each function.
 
 export interface JWTPayload {
     email: string;
@@ -27,7 +29,7 @@ export interface JWTPayload {
  */
 export function generateToken(payload: { email: string; username?: string }): string {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' } as any);
+    return jwt.sign(payload, getJwtSecret(), { expiresIn: '7d' } as any);
 }
 
 /**
@@ -35,7 +37,7 @@ export function generateToken(payload: { email: string; username?: string }): st
  */
 export function verifyToken(token: string): JWTPayload | null {
     try {
-        return jwt.verify(token, JWT_SECRET) as JWTPayload;
+        return jwt.verify(token, getJwtSecret()) as JWTPayload;
     } catch {
         return null;
     }

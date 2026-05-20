@@ -1,0 +1,72 @@
+.spinner {
+    display: inline-flex;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Sizes */
+.sm {
+    width: 16px;
+    height: 16px;
+}
+
+.md {
+    width: 24px;
+    height: 24px;
+}
+
+.lg {
+    width: 40px;
+    height: 40px;
+}
+
+/* Colors */
+.primary {
+    color: var(--primary-500);
+}
+
+.white {
+    color: white;
+}
+
+.current {
+    color: currentColor;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.overlayContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-8);
+    background: var(--bg-elevated);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+}
+
+.overlayMessage {
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--text-secondary);
+}

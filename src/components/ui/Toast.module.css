@@ -1,0 +1,112 @@
+.container {
+    position: fixed;
+    bottom: var(--space-6);
+    right: var(--space-6);
+    z-index: var(--z-toast);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 400px;
+    pointer-events: none;
+}
+
+@media (max-width: 640px) {
+    .container {
+        left: var(--space-4);
+        right: var(--space-4);
+        bottom: var(--space-4);
+        max-width: none;
+    }
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background: var(--bg-elevated);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-primary);
+    animation: slideIn 300ms ease-out;
+    pointer-events: auto;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.message {
+    flex: 1;
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--text-primary);
+}
+
+.closeButton {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.closeButton:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+/* Variants */
+.success {
+    border-left: 4px solid var(--success-500);
+}
+
+.success .icon {
+    color: var(--success-500);
+}
+
+.error {
+    border-left: 4px solid var(--danger-500);
+}
+
+.error .icon {
+    color: var(--danger-500);
+}
+
+.warning {
+    border-left: 4px solid var(--warning-500);
+}
+
+.warning .icon {
+    color: var(--warning-500);
+}
+
+.info {
+    border-left: 4px solid var(--primary-500);
+}
+
+.info .icon {
+    color: var(--primary-500);
+}

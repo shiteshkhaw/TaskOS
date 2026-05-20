@@ -1,0 +1,459 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-bottom: 60px;
+}
+
+.pageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pageTitle {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+}
+
+.pageSubtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.headerActions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* ─── Groups Grid ─── */
+.groupsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.groupCard {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    border-radius: 24px !important;
+    padding: 24px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02) !important;
+}
+
+.groupCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(79, 70, 229, 0.07) !important;
+    border-color: rgba(79, 70, 229, 0.15) !important;
+}
+
+.groupIconWrap {
+    width: 52px;
+    height: 52px;
+    background: #EEF2FF;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.groupIconEmoji {
+    font-size: 26px;
+}
+
+.groupTitle {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.groupDescription {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.groupMeta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+/* ─── Workspace Grid ─── */
+.workspaceGrid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 28px;
+    align-items: start;
+}
+
+.workspaceLeft,
+.workspaceRight {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.workspaceCard {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.85) !important;
+    border-radius: 24px !important;
+    padding: 22px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02) !important;
+}
+
+.cardSectionTitle {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+}
+
+/* ─── Leaderboard ─── */
+.leaderboardList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.leaderboardItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.02);
+    border-radius: 14px;
+    transition: background 0.2s ease;
+}
+
+.mineItem {
+    background: rgba(79, 70, 229, 0.04);
+    border-color: rgba(79, 70, 229, 0.1);
+}
+
+.memberInfo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.memberRank {
+    font-size: 11px;
+    font-weight: 800;
+    color: #4F46E5;
+    background: rgba(79, 70, 229, 0.08);
+    padding: 3px 8px;
+    border-radius: 6px;
+    min-width: 32px;
+    text-align: center;
+}
+
+.memberNameGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.memberName {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.memberEmail {
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+.memberStats {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.taskCount {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.memberStreak {
+    font-size: 11px;
+    font-weight: 700;
+    color: #D97706;
+}
+
+.memberXP {
+    font-size: 11px;
+    font-weight: 700;
+    color: #4F46E5;
+}
+
+/* ─── Activity Feed ─── */
+.activityList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.activityItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.activityDot {
+    width: 8px;
+    height: 8px;
+    min-width: 8px;
+    border-radius: 50%;
+    background: #4F46E5;
+    margin-top: 5px;
+}
+
+.activityContent {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.activityMessage {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.activityTime {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+/* ─── My Stats ─── */
+.myStatsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+.myStatItem {
+    background: rgba(79, 70, 229, 0.04);
+    border: 1px solid rgba(79, 70, 229, 0.08);
+    border-radius: 14px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+}
+
+.myStatValue {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.myStatLabel {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* ─── Group Info ─── */
+.groupInfoList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.groupInfoRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+}
+
+.groupInfoLabel {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.groupInfoValue {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.groupInfoId {
+    font-size: 11px;
+    font-family: monospace;
+    color: var(--text-muted);
+}
+
+/* ─── Modal / Form ─── */
+.modalForm {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.formLabel {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.roleToggle {
+    display: flex;
+    gap: 8px;
+}
+
+.roleBtn {
+    flex: 1;
+    padding: 10px;
+    border: 1.5px solid var(--border-primary);
+    background: white;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+.activeRole {
+    border-color: #4F46E5;
+    color: #4F46E5;
+    background: #EEF2FF;
+}
+
+.roleHint {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    line-height: 1.4;
+}
+
+.errorMsg {
+    font-size: 13px;
+    color: #DC2626;
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin: 0;
+}
+
+.successMsg {
+    font-size: 13px;
+    color: #16A34A;
+    background: #F0FDF4;
+    border: 1px solid #BBF7D0;
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin: 0;
+}
+
+/* ─── Misc ─── */
+.miniLoader {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.emptyNote {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 20px 0;
+    margin: 0;
+}
+
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    text-align: center;
+    border-radius: 28px !important;
+    grid-column: span 3;
+}
+
+.emptyIcon {
+    width: 56px;
+    height: 56px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+}
+
+.emptyIcon svg { width: 100%; height: 100%; }
+
+.emptyState h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.emptyState p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    max-width: 300px;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1100px) {
+    .workspaceGrid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+    .groupsGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+    .groupsGrid { grid-template-columns: 1fr; }
+    .pageHeader { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .myStatsGrid { grid-template-columns: 1fr; }
+}

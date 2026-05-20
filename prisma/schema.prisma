@@ -1,0 +1,226 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  email              String             @id @db.VarChar
+  username           String?            @db.VarChar
+  passwordHash       String?            @map("password_hash") @db.VarChar
+  createdAt          DateTime?          @default(now()) @map("created_at") @db.Timestamp(6)
+  avatarUrl          String?            @map("avatar_url") @db.VarChar
+  isPro              Boolean?           @map("is_pro")
+  stripeCustomerId   String?            @map("stripe_customer_id") @db.VarChar
+  createdGroups      Group[]            @relation("GroupCreator")
+  habits             Habit[]
+  notifications      Notification[]
+  plannerEvents      PlannerEvent[]
+  push_subscriptions PushSubscription[]
+  streak             Streak?
+  tasks              Task[]
+  behaviorLogs       BehaviorLog[]
+  groupMembers       GroupMember[]
+
+  @@index([email], map: "ix_users_email")
+  @@map("users")
+}
+
+model BehaviorLog {
+  id         String   @id @default(uuid()) @db.VarChar
+  userEmail  String   @map("user_email") @db.VarChar
+  eventType  String   @map("event_type") @db.VarChar
+  entityId   String?  @map("entity_id") @db.VarChar
+  entityType String?  @map("entity_type") @db.VarChar
+  metadata   Json?    @db.Json
+  occurredAt DateTime @default(now()) @map("occurred_at")
+  user       User     @relation(fields: [userEmail], references: [email])
+
+  @@index([userEmail, eventType])
+  @@index([userEmail, occurredAt])
+  @@map("behavior_logs")
+}
+
+model Task {
+  id               String         @id @default(uuid()) @db.VarChar
+  title            String         @db.VarChar
+  description      String?
+  userEmail        String         @map("user_email") @db.VarChar
+  done             Boolean?       @default(false)
+  isComplete       Boolean?       @default(false) @map("is_complete")
+  priority         Int?
+  category         String?        @db.VarChar
+  dueDate          DateTime?      @map("due_date") @db.Date
+  dueTime          String?        @map("due_time") @db.VarChar
+  createdAt        DateTime?      @default(now()) @map("created_at") @db.Timestamp(6)
+  completedAt      DateTime?      @map("completed_at") @db.Timestamp(6)
+  isGroupTask      Boolean?       @map("is_group_task")
+  groupId          String?        @map("group_id") @db.VarChar
+  groupName        String?        @map("group_name") @db.VarChar
+  createdBy        String?        @map("created_by") @db.VarChar
+  reminderDatetime DateTime?      @map("reminder_datetime") @db.Timestamp(6)
+  reminderSent     Boolean?       @map("reminder_sent")
+  subtasks         Json?          @db.Json
+  notifications    Notification[]
+  group            Group?         @relation(fields: [groupId], references: [id], onUpdate: NoAction)
+  user             User           @relation(fields: [userEmail], references: [email], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([userEmail], map: "ix_tasks_user_email")
+  @@map("tasks")
+}
+
+model Habit {
+  id                String    @id @default(uuid()) @db.VarChar
+  userEmail         String    @map("user_email") @db.VarChar
+  title             String    @db.VarChar
+  description       String?
+  frequency         String?   @db.VarChar
+  isActive          Boolean?  @default(true) @map("is_active")
+  completedToday    Boolean?  @map("completed_today")
+  lastCompleted     DateTime? @map("last_completed") @db.Timestamp(6)
+  completedAt       DateTime? @map("completed_at") @db.Timestamp(6)
+  streakCount       Int?      @map("streak_count")
+  totalCompletions  Int?      @map("total_completions")
+  createdAt         DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  reminderTime      String?   @map("reminder_time") @db.VarChar
+  reminderSentDate  DateTime? @map("reminder_sent_date") @db.Date
+  completionHistory Json?     @map("completion_history") @db.Json
+  user              User      @relation(fields: [userEmail], references: [email], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([userEmail], map: "ix_habits_user_email")
+  @@map("habits")
+}
+
+model PlannerEvent {
+  id                    String    @id @default(uuid()) @db.VarChar
+  userEmail             String    @map("user_email") @db.VarChar
+  title                 String    @db.VarChar
+  description           String?
+  date                  DateTime  @db.Date
+  startTime             String?   @map("start_time") @db.VarChar
+  endTime               String?   @map("end_time") @db.VarChar
+  category              String?   @db.VarChar
+  color                 String?   @db.VarChar
+  isAllDay              Boolean?  @map("is_all_day")
+  completed             Boolean?  @default(false)
+  createdAt             DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  reminderMinutesBefore Int?      @map("reminder_minutes_before")
+  reminderSent          Boolean?  @map("reminder_sent")
+  user                  User      @relation(fields: [userEmail], references: [email], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([userEmail], map: "ix_planner_events_user_email")
+  @@map("planner_events")
+}
+
+model Group {
+  id            String          @id @default(uuid()) @db.VarChar
+  name          String          @db.VarChar
+  createdBy     String          @map("created_by") @db.VarChar
+  createdAt     DateTime?       @default(now()) @map("created_at") @db.Timestamp(6)
+  description   String?
+  members       String[]        @db.VarChar // Legacy field, kept for compat
+  groupMembers  GroupMember[]
+  activities    GroupActivity[]
+  creator       User            @relation("GroupCreator", fields: [createdBy], references: [email], onDelete: NoAction, onUpdate: NoAction)
+  notifications Notification[]
+  tasks         Task[]
+
+  @@map("groups")
+}
+
+model GroupMember {
+  id        String   @id @default(uuid())
+  groupId   String   @map("group_id")
+  userEmail String   @map("user_email")
+  role      String   @default("member")  // "admin" | "member"
+  joinedAt  DateTime @default(now()) @map("joined_at")
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userEmail], references: [email])
+
+  @@unique([groupId, userEmail])
+  @@map("group_members_new")
+}
+
+model GroupActivity {
+  id         String   @id @default(uuid())
+  groupId    String   @map("group_id")
+  userEmail  String   @map("user_email")
+  actionType String   @map("action_type")
+  message    String
+  occurredAt DateTime @default(now()) @map("occurred_at")
+  group      Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@index([groupId, occurredAt])
+  @@map("group_activities")
+}
+
+model Streak {
+  userEmail        String    @id @map("user_email") @db.VarChar
+  currentStreak    Int?      @map("current_streak")
+  longestStreak    Int?      @map("longest_streak")
+  totalPoints      Int?      @map("total_points")
+  lastActivityDate DateTime? @map("last_activity_date") @db.Date
+  perfectHabitDays     Int?      @map("perfect_habit_days")
+  lastPerfectHabitDate DateTime? @map("last_perfect_habit_date") @db.Date
+  badges               Json?     @db.Json
+  level            Int?
+  createdAt        DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt        DateTime? @updatedAt @map("updated_at") @db.Timestamp(6)
+  user             User      @relation(fields: [userEmail], references: [email], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([userEmail], map: "ix_streaks_user_email")
+  @@index([lastActivityDate])
+  @@map("streaks")
+}
+
+model Notification {
+  id               String    @id @default(uuid()) @db.VarChar
+  userEmail        String    @map("user_email") @db.VarChar
+  notificationType String    @map("notification_type") @db.VarChar
+  message          String
+  taskId           String?   @map("task_id") @db.VarChar
+  groupId          String?   @map("group_id") @db.VarChar
+  isRead           Boolean?  @map("is_read")
+  extraData        Json?     @map("extra_data") @db.Json
+  createdAt        DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  readAt           DateTime? @map("read_at") @db.Timestamp(6)
+  groups           Group?    @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tasks            Task?     @relation(fields: [taskId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users            User      @relation(fields: [userEmail], references: [email], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([userEmail], map: "ix_notifications_user_email")
+  @@map("notifications")
+}
+
+model PushSubscription {
+  id        String    @id @default(uuid()) @db.VarChar
+  userEmail String    @map("user_email") @db.VarChar
+  endpoint  String    @unique
+  p256dh    String    @db.VarChar
+  auth      String    @db.VarChar
+  userAgent String?   @map("user_agent") @db.VarChar
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamp(6)
+  users     User      @relation(fields: [userEmail], references: [email], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([userEmail], map: "ix_push_subscriptions_user_email")
+  @@map("push_subscriptions")
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid()) @db.VarChar
+  userEmail String    @map("user_email") @db.VarChar
+  token     String    @unique(map: "ix_password_reset_tokens_token") @db.VarChar
+  expiresAt DateTime  @map("expires_at") @db.Timestamp(6)
+  used      Boolean?
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+
+  @@index([userEmail], map: "ix_password_reset_tokens_user_email")
+  @@map("password_reset_tokens")
+}
+
+

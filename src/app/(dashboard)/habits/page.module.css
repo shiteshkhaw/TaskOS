@@ -1,0 +1,376 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-bottom: 60px;
+}
+
+.pageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pageTitle {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+}
+
+.pageSubtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+/* Gamification Bar */
+.gamificationBar {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    align-items: stretch;
+}
+
+.levelCard {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 24px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.01);
+}
+
+.badgeGlow {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(79, 70, 229, 0.08) 0%, transparent 70%);
+}
+
+.levelTitle {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.xpProgressWrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.progressBar {
+    flex: 1;
+    height: 8px;
+    background: var(--bg-tertiary);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #4F46E5 0%, #6366F1 100%);
+    border-radius: 99px;
+    transition: width 0.4s ease-in-out;
+}
+
+.xpLabel {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.badgesWrapper {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 24px;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.01);
+}
+
+.badgeItem {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+    transition: all 0.2s ease;
+}
+
+.badgeItem:hover {
+    transform: translateY(-4px) scale(1.1);
+    box-shadow: 0 10px 20px rgba(79, 70, 229, 0.1);
+    border-color: rgba(79, 70, 229, 0.2);
+}
+
+.badgeIcon {
+    font-size: 20px;
+}
+
+/* Tooltip */
+.badgeTooltip {
+    position: absolute;
+    bottom: 54px;
+    left: 50%;
+    transform: translateX(-50%) translateY(5px);
+    background: var(--text-primary);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 12px;
+    width: 140px;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.2s ease;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    z-index: 50;
+}
+
+.badgeItem:hover .badgeTooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.tooltipName {
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.tooltipDesc {
+    font-size: 10px;
+    opacity: 0.8;
+    margin-top: 2px;
+}
+
+/* Habits Grid */
+.habitsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+}
+
+.habitCard {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 28px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.01);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.habitCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(79, 70, 229, 0.05);
+}
+
+.completedCard {
+    background: rgba(240, 253, 244, 0.5);
+    border-color: rgba(34, 197, 94, 0.2);
+}
+
+.habitHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.habitCircleProgress {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progressCircleSvg {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.circleVal {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.deleteButton {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 14px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.deleteButton:hover {
+    background: var(--danger-50);
+    color: var(--danger-500);
+}
+
+.habitTitle {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.habitDescription {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.habitStats {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.statItem {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.statLabel {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.statValue {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.completeBtn {
+    width: 100%;
+    margin-top: auto;
+}
+
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    text-align: center;
+    border-radius: 28px;
+}
+
+.emptyIcon {
+    width: 64px;
+    height: 64px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+}
+.emptyIcon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.emptyState h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.emptyState p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    max-width: 320px;
+}
+
+/* Modal Form styling */
+.modalForm {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.formLabel {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.select {
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border-primary);
+    outline: none;
+    font-size: 14px;
+    color: var(--text-primary);
+    background: white;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .gamificationBar {
+        grid-template-columns: 1fr;
+    }
+    .habitsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .habitsGrid {
+        grid-template-columns: 1fr;
+    }
+}

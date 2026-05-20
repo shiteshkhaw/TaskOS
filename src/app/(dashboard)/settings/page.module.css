@@ -1,0 +1,56 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.pageTitle {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.settingsGrid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.accountSection {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border-secondary);
+    margin-bottom: var(--space-4);
+}
+
+.accountInfo h4 {
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--text-secondary);
+    margin: 0 0 var(--space-1);
+}
+
+.accountInfo p {
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.dangerZone h4 {
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--text-secondary);
+    margin: 0 0 var(--space-3);
+}

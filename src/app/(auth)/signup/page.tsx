@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, FormEvent, useEffect } from 'react';
+import { useState, FormEvent, useCallback } from 'react';
+import Script from 'next/script';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
@@ -50,35 +51,6 @@ export default function SignupPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
-    // Initialize Google Identity Services
-    useEffect(() => {
-        // Load the script
-        const script = document.createElement('script');
-        script.src = 'https://accounts.google.com/gsi/client';
-        script.async = true;
-        script.defer = true;
-        document.head.appendChild(script);
-
-        script.onload = () => {
-            const win = window as any;
-            if (win.google) {
-                win.google.accounts.id.initialize({
-                    client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
-                    callback: handleGoogleResponse,
-                });
-
-                win.google.accounts.id.renderButton(
-                    document.getElementById('google-btn-container') as HTMLElement,
-                    { theme: 'outline', size: 'large', type: 'standard', shape: 'rectangular', text: 'continue_with' }
-                );
-            }
-        };
-
-        return () => {
-            document.head.removeChild(script);
-        };
-    }, []);
-
     const handleGoogleResponse = async (response: any) => {
         setIsLoading(true);
         setError('');
@@ -95,6 +67,21 @@ export default function SignupPage() {
             setIsLoading(false);
         }
     };
+
+    // Called by Next.js <Script onLoad> once the GSI SDK is ready
+    const handleGsiLoad = useCallback(() => {
+        const win = window as any;
+        if (!win.google) return;
+        win.google.accounts.id.initialize({
+            client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
+            callback: handleGoogleResponse,
+        });
+        win.google.accounts.id.renderButton(
+            document.getElementById('google-btn-container') as HTMLElement,
+            { theme: 'outline', size: 'large', type: 'standard', shape: 'rectangular', text: 'continue_with' }
+        );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // Dynamic password strength (1-4)
     const getStrength = (pwd: string) => {
@@ -249,6 +236,15 @@ export default function SignupPage() {
                     <div className={styles.divider}>or continue with</div>
 
                     {/* Google Auth Container */}
+                    {/* Next.js Script with strategy="lazyOnload" ensures the
+                        browser emits a proper <link rel="preload" as="script">
+                        (fixes the "missing as value" console warning) and
+                        runs onLoad after the GSI SDK is fully parsed. */}
+                    <Script
+                        src="https://accounts.google.com/gsi/client"
+                        strategy="lazyOnload"
+                        onLoad={handleGsiLoad}
+                    />
                     <div id="google-btn-container" style={{ display: 'flex', justifyContent: 'center' }}></div>
 
                     <div className={styles.footer}>

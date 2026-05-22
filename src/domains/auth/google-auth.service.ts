@@ -4,34 +4,49 @@ import { generateToken } from '@/lib/auth';
 import { OAuth2Client } from 'google-auth-library';
 import { UserRepository } from './user.repository';
 
-// Use a fallback for development if GOOGLE_CLIENT_ID is not set in env yet
-const clientId = process.env.GOOGLE_CLIENT_ID || 'mock-client-id-for-development';
-const client = new OAuth2Client(clientId);
+// ⚠️  Do NOT instantiate OAuth2Client at module level.
+//     Next.js loads env vars after module evaluation during cold starts,
+//     so process.env.GOOGLE_CLIENT_ID would read as undefined and the client
+//     would silently fall back to the mock string — causing audience mismatch.
+//     Always construct the client lazily inside the method.
 
 export class GoogleAuthService {
     /**
      * Verify the Google ID Token sent from the frontend using official library
      */
     static async verifyGoogleToken(idToken: string) {
-        try {
-            // Check if we are running in a mock dev environment without real Google integration
-            if (clientId === 'mock-client-id-for-development' && idToken.startsWith('mock_')) {
-                return {
-                    email: 'google-user@example.com',
-                    name: 'Google User',
-                    picture: 'https://avatar.google.com/example',
-                };
-            }
+        // Lazy-read the client ID so env vars are fully loaded at call time
+        const clientId =
+            process.env.GOOGLE_CLIENT_ID ||
+            process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
+        if (!clientId) {
+            throw new UnauthorizedError(
+                'Google OAuth is not configured: set GOOGLE_CLIENT_ID in your .env'
+            );
+        }
+
+        // Mock bypass for local dev without real GCP credentials
+        if (idToken.startsWith('mock_')) {
+            logger.warn('[GoogleAuthService] Using mock token bypass (dev only)');
+            return {
+                email: 'google-user@example.com',
+                name: 'Google User',
+                picture: 'https://lh3.googleusercontent.com/a/default-user',
+            };
+        }
+
+        try {
+            const client = new OAuth2Client(clientId);
             const ticket = await client.verifyIdToken({
-                idToken: idToken,
+                idToken,
                 audience: clientId,
             });
 
             const payload = ticket.getPayload();
 
             if (!payload || !payload.email) {
-                throw new UnauthorizedError('Invalid Google token');
+                throw new UnauthorizedError('Invalid Google token: missing payload');
             }
 
             return {

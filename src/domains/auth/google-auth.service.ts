@@ -39,9 +39,15 @@ export class GoogleAuthService {
                 name: payload.name,
                 picture: payload.picture,
             };
-        } catch (error) {
-            logger.error('[GoogleAuthService] Token verification failed', { error });
-            throw new UnauthorizedError('Google Authentication Failed');
+        } catch (error: any) {
+            // Log the real reason so it appears in the server console
+            logger.error('[GoogleAuthService] Token verification failed', {
+                reason: error?.message ?? error,
+                stack: error?.stack,
+            });
+            throw new UnauthorizedError(
+                `Google token verification failed: ${error?.message ?? 'unknown error'}`
+            );
         }
     }
 

@@ -26,6 +26,25 @@ const nextConfig: NextConfig = {
   experimental: {
     // Server Actions are stable in Next.js 15
   },
+
+  // HTTP Security Headers
+  async headers() {
+    return [
+      {
+        // Apply to all routes
+        source: '/(.*)',
+        headers: [
+          {
+            // Allow Google OAuth popup to postMessage back to opener.
+            // "same-origin" (Next.js default) blocks cross-origin postMessage,
+            // which breaks the Google Identity Services button/One Tap flow.
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin-allow-popups',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -2,6 +2,19 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 
+/** Safely extract a string message from the various error shapes the API can return:
+ *  - `{ error: { message, code } }` — from withErrorHandler
+ *  - `{ detail: "..." }` — legacy FastAPI-style
+ *  - `{ error: "..." }` — plain string
+ */
+function extractErrorMessage(data: any, fallback: string): string {
+    if (!data) return fallback;
+    if (typeof data.detail === 'string') return data.detail;
+    if (typeof data.error === 'string') return data.error;
+    if (data.error && typeof data.error.message === 'string') return data.error.message;
+    return fallback;
+}
+
 interface User {
     email: string;
     username: string | null;
@@ -86,7 +99,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             const data = await response.json();
 
             if (!response.ok) {
-                return { success: false, error: data.detail || data.error || 'Login failed' };
+                return { success: false, error: extractErrorMessage(data, 'Login failed') };
             }
 
             const userData: User = {
@@ -114,7 +127,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             const data = await response.json();
 
             if (!response.ok) {
-                return { success: false, error: data.detail || data.error || 'Signup failed' };
+                return { success: false, error: extractErrorMessage(data, 'Signup failed') };
             }
 
             // Auto-login after signup - login with the new credentials
@@ -149,7 +162,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             const data = await response.json();
 
             if (!response.ok) {
-                return { success: false, error: data.detail || data.error || 'Google login failed' };
+                return { success: false, error: extractErrorMessage(data, 'Google login failed') };
             }
 
             const userData: User = {
